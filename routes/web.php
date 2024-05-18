@@ -36,6 +36,7 @@ Route::delete('/dashboard/{user}', [CustomAuthController::class, 'destroy'])->na
 // for template navigation
 Route::get('/', [CustomAuthController::class, 'index'])->name('index');
 Route::get('/packages', [CustomAuthController::class, 'packages'])->name('packages');
+Route::get('/package', [CustomAuthController::class, 'package'])->name('package');
 Route::get('/contact', [CustomAuthController::class, 'contact'])->name('contact');
 // for store booking
 Route::post('/', [BookingController::class, 'store'])->name('bookings.save');
@@ -43,3 +44,5 @@ Route::post('/', [BookingController::class, 'store'])->name('bookings.save');
 Route::get('/booking/{booking}/editbooking', [CustomAuthController::class, 'editbooking'])->name('bookings.edit');
 Route::put('/booking/{booking}', [CustomAuthController::class, 'updatebooking'])->name('bookings.update');
 Route::delete('/booking/{booking}', [CustomAuthController::class, 'destroybooking'])->name('bookings.destroy');
+
+Route::post('/package', [CustomAuthController::class, 'storepackage'])->name('package.store');

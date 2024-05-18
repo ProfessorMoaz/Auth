@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Models\User;
 use App\Models\Booking;
+use App\Models\Package;
 use Hash;
 
 class CustomAuthController extends Controller
@@ -85,6 +86,14 @@ class CustomAuthController extends Controller
         return redirect('/');
     }
 
+    public function package()
+    {
+        if(Auth::check()){
+            return view('package');
+        }
+        return redirect('/');
+    }
+
     public function signOut()
     {
         session::flush();
@@ -149,5 +158,30 @@ class CustomAuthController extends Controller
     {
         $booking->delete();
         return redirect('booking')->with('success', 'Booking deleted successfully.');
+    }
+
+    public function storepackage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'place' => 'required|string|max:255',
+            'duration' => 'required|string|max:255',
+            'persons' => 'required|integer',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+        ]);
+
+        $imagePath = $request->file('image')->store('images', 'public');
+
+        $package = new Package();
+        $package->image = $imagePath;
+        $package->place = $request->place;
+        $package->duration = $request->duration;
+        $package->persons = $request->persons;
+        $package->price = $request->price;
+        $package->description = $request->description;
+        $package->save();
+
+        return redirect()->route('/package')->with('success', 'Package saved successfully!');
     }
 }
